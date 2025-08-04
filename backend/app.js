@@ -12,13 +12,25 @@ import dotenv from "dotenv";
 const app = express();
 dotenv.config(); 
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://hireconnect.vercel.app"
+];
+
 app.use(
   cors({
-    origin: true, // allow all origins
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
 
 
 app.use(cookieParser());
