@@ -22,6 +22,7 @@ const Navbar = () => {
           },
         }
       );
+      localStorage.setItem("token", "");
       toast.success(response.data.message);
       setIsAuthorized(false);
       navigateTo("/login");
