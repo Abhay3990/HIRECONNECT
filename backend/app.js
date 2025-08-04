@@ -31,6 +31,13 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running!",
+  });
+});
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
