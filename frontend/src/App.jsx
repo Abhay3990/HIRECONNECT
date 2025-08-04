@@ -23,11 +23,13 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "https://hireconnect.onrender.com/api/v1/user/getuser",
+          "http://localhost:4000/api/v1/user/getuser",
           {
             withCredentials: true,
+            
           }
         );
+        console.log("res",response)
         setUser(response.data.user);
         setIsAuthorized(true);
       } catch (error) {
