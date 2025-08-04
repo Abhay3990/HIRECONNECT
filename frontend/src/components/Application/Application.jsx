@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../main";
 const Application = () => {
+  const token = localStorage.getItem("token");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
@@ -37,10 +38,10 @@ const Application = () => {
       const { data } = await axios.post(
         "https://hireconnect.onrender.com/api/v1/application/post",
         formData,
-        {
-          withCredentials: true,
+         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );

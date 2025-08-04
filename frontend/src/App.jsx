@@ -18,26 +18,34 @@ import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 
 const App = () => {
+ const token = localStorage.getItem("token");
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          "https://hireconnect.onrender.com/api/v1/user/getuser",
-          {
-            withCredentials: true,
-            
-          }
-        );
-        console.log("res",response)
-        setUser(response.data.user);
-        setIsAuthorized(true);
-      } catch (error) {
-        setIsAuthorized(false);
-      }
-    };
-    fetchUser();
-  }, [isAuthorized]);
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        "https://hireconnect.onrender.com/api/v1/user/getuser",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("res", response);
+      setUser(response.data.user);
+      setIsAuthorized(true);
+    } catch (error) {
+      console.error("Fetch user error:", error);
+      setIsAuthorized(false);
+    }
+  };
+
+  fetchUser();
+}, [isAuthorized]);
 
   return (
     <>

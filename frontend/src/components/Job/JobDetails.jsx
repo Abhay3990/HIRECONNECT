@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 const JobDetails = () => {
+  const token = localStorage.getItem("token");
   const { id } = useParams();
   const [job, setJob] = useState({});
   const navigateTo = useNavigate();
@@ -13,8 +14,10 @@ const JobDetails = () => {
   useEffect(() => {
     axios
       .get(`https://hireconnect.onrender.com/api/v1/job/${id}`, {
-        withCredentials: true,
-      })
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((res) => {
         setJob(res.data.job);
       })

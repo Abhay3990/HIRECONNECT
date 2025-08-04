@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 const PostJob = () => {
+  const token = localStorage.getItem("token");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -52,9 +53,9 @@ const PostJob = () => {
               salaryFrom,
               salaryTo,
             },
-        {
-          withCredentials: true,
+         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

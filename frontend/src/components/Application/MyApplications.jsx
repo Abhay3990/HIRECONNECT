@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
 
 const MyApplications = () => {
+  const token = localStorage.getItem("token");
   const { user } = useContext(Context);
   const [applications, setApplications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -18,17 +19,23 @@ const MyApplications = () => {
     try {
       if (user && user.role === "Employer") {
         axios
-          .get("https://hireconnect.onrender.com/api/v1/application/employer/getall", {
-            withCredentials: true,
-          })
+          .get("https://hireconnect.onrender.com/api/v1/application/employer/getall",   {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
           .then((res) => {
             setApplications(res.data.applications);
           });
       } else {
         axios
-          .get("https://hireconnect.onrender.com/api/v1/application/jobseeker/getall", {
-            withCredentials: true,
-          })
+          .get("https://hireconnect.onrender.com/api/v1/application/jobseeker/getall",   {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
           .then((res) => {
             setApplications(res.data.applications);
           });
@@ -45,8 +52,11 @@ const MyApplications = () => {
   const deleteApplication = (id) => {
     try {
       axios
-        .delete(`https://hireconnect.onrender.com/api/v1/application/delete/${id}`, {
-          withCredentials: true,
+        .delete(`https://hireconnect.onrender.com/api/v1/application/delete/${id}`,  {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         })
         .then((res) => {
           toast.success(res.data.message);

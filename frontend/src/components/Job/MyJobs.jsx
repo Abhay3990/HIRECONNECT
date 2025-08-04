@@ -7,6 +7,7 @@ import { Context } from "../../main";
 import { useNavigate } from "react-router-dom";
 
 const MyJobs = () => {
+  const token = localStorage.getItem("token");
   const [myJobs, setMyJobs] = useState([]);
   const [editingMode, setEditingMode] = useState(null);
   const { isAuthorized, user } = useContext(Context);
@@ -18,7 +19,11 @@ const MyJobs = () => {
       try {
         const { data } = await axios.get(
           "https://hireconnect.onrender.com/api/v1/job/getmyjobs",
-          { withCredentials: true }
+          {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
         );
         setMyJobs(data.myJobs);
       } catch (error) {
@@ -47,9 +52,11 @@ const MyJobs = () => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     await axios
-      .put(`https://hireconnect.onrender.com/api/v1/job/update/${jobId}`, updatedJob, {
-        withCredentials: true,
-      })
+      .put(`https://hireconnect.onrender.com/api/v1/job/update/${jobId}`, updatedJob,  {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((res) => {
         toast.success(res.data.message);
         setEditingMode(null);
@@ -62,9 +69,11 @@ const MyJobs = () => {
   //Function For Deleting Job
   const handleDeleteJob = async (jobId) => {
     await axios
-      .delete(`https://hireconnect.onrender.com/api/v1/job/delete/${jobId}`, {
-        withCredentials: true,
-      })
+      .delete(`https://hireconnect.onrender.com/api/v1/job/delete/${jobId}`,  {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((res) => {
         toast.success(res.data.message);
         setMyJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));

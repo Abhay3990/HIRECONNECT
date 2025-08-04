@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
+  const token = localStorage.getItem("token");
   const [show, setShow] = useState(false);
   const { isAuthorized, setIsAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
@@ -15,7 +16,10 @@ const Navbar = () => {
       const response = await axios.get(
         "https://hireconnect.onrender.com/api/v1/user/logout",
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       toast.success(response.data.message);
